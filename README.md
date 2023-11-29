@@ -2,6 +2,15 @@
 
 ### Makes sure to have git lfs installed: instructions found here: https://git-lfs.com/
 
+## Overall Environment
+
+Most python packages needed are in the ```requirements.txt``` file.
+
+We recommend you make a new conda environment and run:
+```
+pip install -r requirements.txt
+```
+
 ## Model Output Explorer
 
 We provided a jupyter notebook that lets to expore some of the model outputs.  It is important to note that the songs in the dataset as well as the model outputs can contain mature or offensive content.  View discretion is advised.

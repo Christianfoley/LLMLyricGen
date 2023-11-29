@@ -1,0 +1,11 @@
+datasets==2.15.0
+dtaidistance==2.3.11
+fastdtw==0.3.4
+lexical_diversity==0.1.1
+nltk==3.8.1
+num2words==0.5.13
+numpy==1.26.2
+openai==1.3.6
+pandas==2.1.3
+tqdm==4.65.0
+Unidecode==1.3.7
