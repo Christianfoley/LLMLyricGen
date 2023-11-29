@@ -30,6 +30,7 @@ STANZA_KEYWORDS = {
     "interlude",
     "part",
     "refrão",
+    "refrao",
 }
 
 
@@ -43,7 +44,7 @@ def get_kword(delin):
 def clean_song(text):
     """
     Custom rules for "cleaning" the song data to disambiguate stanza
-    delineators
+    delineaters
 
     Parameters
     ----------
@@ -59,19 +60,51 @@ def clean_song(text):
 
     # Replace all "[?]", "[chuckles]", "[laughs]", "[Mumbling]" with "nan"
     text = re.sub(r"\[\?\]|\[chuckles\]|\[laughs\]|\[Mumbling\]", "nan", text)
+    text = re.sub(r"\(\?\)|\(chuckles\)|\(laughs\)|\(Mumbling\)", "nan", text)
 
     # Replace all "]:" with "]\n"
     text = re.sub(r"\]:", "]\n", text)
+    text = re.sub(r"\):", ")\n", text)
 
     # Replace all "[X]" with "nan" where X is any number of "." characters
     text = re.sub(r"\[\.*?\]", "nan", text)
+    text = re.sub(r"\(\.*?\)", "nan", text)
 
     # For any remaining bracketed texts replace with kword readable string and add a newline
-    def replace_bracketed(match):
-        kword = get_kword(match.group(1))
-        return f"\n[{kword}]\n"
 
-    text = re.sub(r"\[([\s\S]*?)\]", replace_bracketed, text)
+    def match_to_kword_group(match):
+        kword = get_kword(match.group(2))
+
+        for keyword in STANZA_KEYWORDS:
+            if kword.startswith(keyword):
+                return kword
+        return False
+
+    def replace_bracketed_if_match(match):
+        kword = match_to_kword_group(match)
+        if kword:
+            return f"[{kword}]\n"
+        else:
+            return match.group()
+
+    text = re.sub(r"(\[|\()([\s\S]*?)(\]|\))", replace_bracketed_if_match, text)
+
+    # Finally remove any pre/post-ambles:
+    # 1.) the songtext should begin with a successful match (matches to a keyword)
+    # 2.) the should should end with the LAST \n\n that is Not followed directly by a match
+    first_delin_idx = 0
+    delins = list(re.finditer(r"(\[)([\s\S]*?)(\])", text))
+    for match in delins:
+        if match_to_kword_group(match):
+            first_delin_idx = match.start()
+            break
+    text = text[first_delin_idx:]
+
+    trailing_double_nls = list(re.finditer(r"(?<!\])\n\n(?!(\[)([\s\S]*?)(\]))", text))
+    for match in trailing_double_nls:
+        if match.start() >= first_delin_idx:
+            text = text[: match.start()]
+            break
 
     return text
 
