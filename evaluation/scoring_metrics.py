@@ -1,15 +1,13 @@
 import re
-import math
 import unidecode
 import copy
 from pprint import pp
 
 from lexical_diversity import lex_div as ld
 from dtaidistance import dtw
-from fastdtw import fastdtw
 import numpy as np
 
-import encode_lines as encode
+import evaluation.encode_lines as encode
 
 
 def measure_lex_div(p1, mode="mtld"):
@@ -37,6 +35,50 @@ def measure_lex_div(p1, mode="mtld"):
     elif mode == "avg_mtld":
         lex_div = ld.mtld_ma_wrap(flem_tokens)
     return lex_div
+
+
+def measure_similarity(p1, p2, context_range=0):
+    """
+    Measure: word similarity
+
+    Measures the similarity, as defined by a normalized edit distance between two stanzas
+    or paragraphs. Edit distance is calculated line-by-line, and normalized by line length
+
+    Parameters
+    ----------
+    p1 : list
+        paragraph as a list of line strings
+    p2 : list
+        comparison paragraph as a list of line strings
+    context_range : int
+        word context range to measure (either first N words if positive, or last N words if
+        negative), by default 0
+
+    Returns
+    -------
+    float
+        score of meter consistency
+    """
+
+    def prep_line(line: str):
+        line = line.strip().split()
+        if context_range > 0:
+            line = line[:context_range]
+        elif context_range < 0:
+            line[context_range:]
+        return " ".join(line)
+
+    p1 = [prep_line(l) for l in p1]
+    p2 = [prep_line(l) for l in p2]
+
+    if len(p1) < len(p2):
+        p1, p2 = p2, p1
+
+    edit_dist = 0
+    for i in range(len(p2)):  # dont penalize line count differences
+        edit_dist += levenshteinDistance(p1[i], p2[i])
+
+    return edit_dist / len(p2)
 
 
 def measure_meter(p1, p2):
@@ -101,7 +143,7 @@ def measure_syllable(p1: list, p2: list):
     Returns
     -------
     float
-        length-normalized syllabic consistency score
+        syllabic consistency score
     """
     score = 0
 
@@ -127,7 +169,62 @@ def measure_syllable(p1: list, p2: list):
     for i in range(len(p1_c)):
         score += abs(sum(p1_c[i]) - sum(p2_c[i]))
 
-    return score  # min(100, 100 / (score + 2e-7))  # math.exp(-0.1 * score)
+    return score / len(p1_c)  # min(100, 100 / (score + 2e-7))  # math.exp(-0.1 * score)
+
+
+def measure_internal_semantics(model, p1):
+    """
+    Measures the semantic consistency using SentenceBert embeddings.
+
+    Internal semantic consistency is defined as the average centroid distance
+    of semantic embedding vectors of each line in the given text.
+
+    Parameters
+    ----------
+    model : torch.nn.Module
+        sbert model
+    p1 : list
+        list of lines of paragraph or song as strings
+
+
+    Returns
+    -------
+    float
+        length-normalized syllabic consistency score
+    """
+    p1 = np.stack(encode.embed_sbert(p1, model), 0)
+    centroid = np.mean(p1, axis=0)
+
+    return np.mean(np.linalg.norm(p1 - centroid, axis=1))
+
+
+def measure_compared_semantics(model, p1, p2):
+    """
+    Measures the semantic consistency using SentenceBert embeddings.
+
+    Comparison sematic consistency is defined as the euclidean distance between
+    the centroids of the two distributions
+
+    Parameters
+    ----------
+    model : torch.nn.Module
+        sbert model
+    p1 : list
+        list of lines of paragraph or song as strings
+    p2 : list
+        comparison paragraph as a list of line strings
+
+    Returns
+    -------
+    float
+        length-normalized syllabic consistency score
+    """
+    p1 = np.stack(encode.embed_sbert(p1, model), 0)
+    p2 = np.stack(encode.embed_sbert(p2, model), 0)
+
+    centroid1 = np.mean(p1, axis=0)
+    centroid2 = np.mean(p2, axis=0)
+    return np.linalg.norm(centroid1 - centroid2)
 
 
 def min_dtw_offset(p1, p2, return_cropped=True, use_short_window=True):
@@ -202,6 +299,7 @@ def min_dtw_offset(p1, p2, return_cropped=True, use_short_window=True):
 
 def levenshteinDistance(s1, s2):
     """
+    Returns a normalized (by string length) levenshtein edit distance
     DP edit distance implementation
     credit to https://stackoverflow.com/questions/2460177
 
@@ -231,4 +329,4 @@ def levenshteinDistance(s1, s2):
                     1 + min((distances[i1], distances[i1 + 1], distances_[-1]))
                 )
         distances = distances_
-    return distances[-1]
+    return distances[-1] / len(s1)

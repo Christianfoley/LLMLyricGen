@@ -1,6 +1,9 @@
-import syllable_analysis as sylco
-import meter_analysis as metco
 import re, unidecode
+import openai
+import numpy as np
+
+import evaluation.syllable_analysis as sylco
+import evaluation.meter_analysis as metco
 
 
 def prep_encoding(text):
@@ -99,3 +102,47 @@ def encode_line_syllable_count(line, to_stdout=False):
             out += f": {sum(syllable_counts)}"
         print(out)
     return out
+
+
+def embed_sbert(text, model):
+    """
+    Uses Senternce bert model to embed text into a low-dimensional
+    space.
+
+    Parameters
+    ----------
+    text : list, str
+        text or list of texts to embed
+    model : torch.nn.module
+        embedding model
+
+    Returns
+    -------
+    list, np.ndarray
+        embedding vector or list of embedding vectors
+    """
+    return model.encode(text)
+
+
+def embed_ada(text, keyfile="api_key.txt"):
+    """
+    Use openai's ada via the openai API to generate an embedding
+
+    Parameters
+    ----------
+    text : str
+        text to embed
+
+    Returns
+    -------
+    np.ndarray
+        embedding vector
+    """
+    with open(keyfile, "r") as f:
+        key = f.readline().strip()
+    openai.api_key = key
+
+    embedding = np.array(
+        openai.Embedding.create(model="text-embedding-ada-002", input=text)
+    )
+    return embedding.data[0].embedding

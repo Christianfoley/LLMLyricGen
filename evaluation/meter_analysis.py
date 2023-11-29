@@ -1,7 +1,8 @@
 import nltk
 import re
-import syllable_analysis as sylco
 import string
+
+import evaluation.syllable_analysis as sylco
 
 nltk.download("cmudict")
 WORDS = nltk.corpus.cmudict.dict()

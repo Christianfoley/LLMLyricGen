@@ -30,6 +30,7 @@ STANZA_KEYWORDS = {
     "interlude",
     "part",
     "refrão",
+    "refrao",
 }
 
 
@@ -59,19 +60,32 @@ def clean_song(text):
 
     # Replace all "[?]", "[chuckles]", "[laughs]", "[Mumbling]" with "nan"
     text = re.sub(r"\[\?\]|\[chuckles\]|\[laughs\]|\[Mumbling\]", "nan", text)
+    text = re.sub(r"\(\?\)|\(chuckles\)|\(laughs\)|\(Mumbling\)", "nan", text)
 
     # Replace all "]:" with "]\n"
     text = re.sub(r"\]:", "]\n", text)
+    text = re.sub(r"\):", ")\n", text)
 
     # Replace all "[X]" with "nan" where X is any number of "." characters
     text = re.sub(r"\[\.*?\]", "nan", text)
+    text = re.sub(r"\(\.*?\)", "nan", text)
 
     # For any remaining bracketed texts replace with kword readable string and add a newline
-    def replace_bracketed(match):
-        kword = get_kword(match.group(1))
-        return f"\n[{kword}]\n"
+    def replace_bracketed_if_match(match):
+        kword = get_kword(match.group(2))
+        matched_with_kword = False
 
-    text = re.sub(r"\[([\s\S]*?)\]", replace_bracketed, text)
+        for keyword in STANZA_KEYWORDS:
+            if kword.startswith(keyword):
+                matched_with_kword = True
+                break
+
+        if matched_with_kword:
+            return f"\n[{kword}]\n"
+        else:
+            return match.group()
+
+    text = re.sub(r"(\[|\()([\s\S]*?)(\]|\))", replace_bracketed_if_match, text)
 
     return text
 
