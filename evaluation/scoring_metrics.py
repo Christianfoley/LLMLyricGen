@@ -20,7 +20,7 @@ def measure_lex_div(p1, mode="mtld"):
 
     Parameters
     ----------
-    p1 : list(str)
+    p1 : list(str)f
         list of lines of paragraph or song as strings
     mode : str, optional
         lexical diversity metric, by default "mtld"
@@ -256,24 +256,16 @@ def measure_phonetic_similarity(p1, p2):
     p1 = [encode.encode_line_pronunciation(line) for line in p1]
     p2 = [encode.encode_line_pronunciation(line) for line in p2]
 
-    p1_string = (
-        "".join(line_pronunciation for line_pronunciation in p1)
-        .replace(" ", "")
-        .strip()
-    )
-    p2_string = (
-        "".join(line_pronunciation for line_pronunciation in p2)
-        .replace(" ", "")
-        .strip()
-    )
+    # p1_string = "".join(line_pronunciation for line_pronunciation in p1).replace(" ", "").strip()
+    # p2_string = "".join(line_pronunciation for line_pronunciation in p2).replace(" ", "").strip()
 
-    p1_string = re.sub(r"\s+", "", p1_string, flags=re.UNICODE)
-    p2_string = re.sub(r"\s+", "", p2_string, flags=re.UNICODE)
+    # p1_string = re.sub(r"\s+", "", p1_string, flags=re.UNICODE)
+    # p2_string = re.sub(r"\s+", "", p2_string, flags=re.UNICODE)
 
-    p1_string = re.sub(r"[^\w]", "", p1_string, flags=re.UNICODE)
-    p2_string = re.sub(r"[^\w]", "", p2_string, flags=re.UNICODE)
+    # p1_string = re.sub(r'[^\w]', "", p1_string, flags=re.UNICODE)
+    # p2_string = re.sub(r'[^\w]', "", p2_string, flags=re.UNICODE)
 
-    edit_dist = levenshteinDistance(p1_string, p2_string)
+    edit_dist = levenshteinDistance(p1, p2)
     return edit_dist
 
 
