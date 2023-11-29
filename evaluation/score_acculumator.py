@@ -58,6 +58,7 @@ class ScoreAccumulator(object):
             "string_similarity",
             "head_similarity",
             "tail_similarity",
+            "phonetic",
         }
         self.internal_measures = {"diversity", "semantics_internal"}
         for measure in self.measures:
@@ -75,7 +76,6 @@ class ScoreAccumulator(object):
             "diversity": metrics.measure_lex_div,
             "meter": metrics.measure_meter,
             "syllable": metrics.measure_syllable,
-<<<<<<< HEAD
             "semantics": lambda p1, p2: metrics.measure_compared_semantics(
                 self.semantic_model, p1, p2
             ),
@@ -85,18 +85,9 @@ class ScoreAccumulator(object):
             "string_similarity": metrics.measure_similarity,
             "head_similarity": lambda p1, p2: metrics.measure_similarity(p1, p2, 2),
             "tail_similarity": lambda p1, p2: metrics.measure_similarity(p1, p2, -2),
-        }
-
-=======
             "phonetic": metrics.measure_phonetic_similarity,
         }
 
-        supported_meas = {"diversity", "meter", "syllable", "phonetic"}
-        for measure in self.measures:
-            if measure not in {"diversity", "meter", "syllable", "phonetic"}:
-                raise NotImplementedError(f"Only measures {supported_meas} supported.")
-
->>>>>>> 3-evaluation-metric-4
     def get_total_pred_score(self, measure):
         """
         Return current score totals of model predictions for a given
