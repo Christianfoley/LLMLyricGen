@@ -2,21 +2,21 @@
 
 ### Makes sure to have git lfs installed: instructions found here: https://git-lfs.com/
 
-# Model Output Explorer
+## Model Output Explorer
 
 We provided a jupyter notebook that lets to expore some of the model outputs.  It is important to note that the songs in the dataset as well as the model outputs can contain mature or offensive content.  View discretion is advised.
 
 Check run the files in ```explore_generations.ipynb``` to see what out model outputted on the test set.  You can also compare to what llama outputs without finetuning.
 
-# Embedding Instructions
+## Embedding Instructions
 
 Embeddings were generated through embedding_generation/embed_model_response.py
 
 To view the embedding graphical results, run through the jupyter notebook ```embedding_generation/evaluate_embedding_accuracy.ipynb```
 
-# Musical Metrics Instructions
+## Musical Metrics Instructions
 
-# Interactive Demo
+## Interactive Demo
 (Large file warning, this will download the model ~25 GB)
 
 To play with out model, follows these steps:
@@ -25,11 +25,11 @@ To play with out model, follows these steps:
 
 2. run ```pip3 install "fschat[model_worker,webui]```
 
-3. run ``` python3 -m fastchat.serve.cli --model-path cs182project/llama-2-7b-chat-lyre-lm```
+3. run ```python3 -m fastchat.serve.cli --model-path cs182project/llama-2-7b-chat-lyre-lm```
 
 4. Have fun!
 
-# Finetuning Instructions
+## Finetuning Instructions
 
 IN ORDER TO FINETUNE THE LLAMA 7B MODEL, YOU NEED ~160GB OF VRAM.  ALL FINETUNING WAS DONE ON 2X A100 80GB
 
@@ -87,3 +87,35 @@ Instructions are as follows:
 
 4. Watch the loss go down! Fun!
 
+## MT-Bench Radar Plots
+
+To generate the radar plots, we copy code from [this colab notebook by Lmsys](https://colab.research.google.com/drive/15O3Y8Rxq37PuMlArE291P4OC6ia37PQK#scrollTo=5i8R0l-XqkgO).
+
+We provide a customized copy in this repo, run ```generate_mt_bench_plots.ipynb``` to replicate the plots.
+
+## MT-Bench Results
+
+MT-Bench is run using [llm_judge](https://github.com/lm-sys/FastChat/tree/main/fastchat/llm_judge).
+
+To evaluate our model on MT-Bench do the following setup in you favorite python environment management system:
+
+1. Run these commands:
+    ```
+    git clone https://github.com/lm-sys/FastChat.git
+    cd FastChat
+    pip install -e ".[model_worker,llm_judge]"
+    ```
+2. Run this to generate the outputs (to make this run in a reasonable time window, use a GPU)
+    ```
+    python gen_model_answer.py --model-path cs182project/llama-2-7b-chat-lyre-lm --model-id lyre-lm
+    ```
+
+    Alternatively, you may copy our provided MT-Bench outputs found at ```mt_bench/lyre-lm.jsonl``` into ```FastChat/fastchat/llm_judge/data/mt_bench/model_answers/```
+
+
+3. Once inference is complete run this to generate judgements, you need an OpenAI API Key:
+
+    ```
+    python gen_judgment.py --model-list lyre-lm
+    ```
+4. Once judgement is done, run ```python show_result.py --model-list lyre-lm```
