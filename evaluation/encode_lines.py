@@ -2,6 +2,9 @@ import syllable_analysis as sylco
 import meter_analysis as metco
 import re, unidecode
 import eng_to_ipa as ipa
+import nltk
+import syllabify
+WORDS = nltk.corpus.cmudict.dict()
 
 def prep_encoding(text):
     """
@@ -100,6 +103,9 @@ def encode_line_syllable_count(line, to_stdout=False):
         print(out)
     return out
 
+WORDS = nltk.corpus.cmudict.dict()
+
+
 def encode_line_pronunciation(line, to_stdout=False):
     """
     Encodes a song line (line of text) into a line of phonemes.
@@ -119,11 +125,37 @@ def encode_line_pronunciation(line, to_stdout=False):
     string
         string of words in IPA representation
     """
-    line = prep_encoding(line)
+
+    def get_syllables(word):
+        syllable = ''
+        syllables = []
+        for i in range(len(word)):
+            phoneme = word[i]
+            print(phoneme)
+            if i == 0 and phoneme[-1].isdigit():
+                syllables.append(phoneme)
+            elif phoneme[-1].isdigit(): # vowel = end of syllable
+                syllable += phoneme
+                print(syllable)
+                syllables.append(syllable)
+                syllable = ''
+            else:
+                syllable += phoneme
+        if syllable != "":
+            syllables.append(syllable)
+        return syllables
+            
 
     if line == "":
         if to_stdout:
             print(line)
         return ""
+    line = re.sub(r"[^\w\s']", "", line, flags=re.UNICODE)
+    line = line.replace(",", "").replace(".", "").replace("!", "").strip()
+    all_syllables = []
+    for word in line.split(" "):
+        pronunciation = WORDS.get(word.lower())
+        if pronunciation is not None:
+            all_syllables.extend(get_syllables(pronunciation[0]))
 
-    return ipa.convert(line)
+    return all_syllables
