@@ -129,6 +129,43 @@ def measure_syllable(p1: list, p2: list):
 
     return score  # min(100, 100 / (score + 2e-7))  # math.exp(-0.1 * score)
 
+def measure_phonetic_similarity(p1, p2):
+    """
+    Measure: phonetic similarity
+
+    Phonetic similarity is calculated through a a normalized Levenshtein edit distance
+    between the phonetic transcriptions of two lyric lines. We use the IPA form
+    of the word to represent its pronunciation.
+
+    Parameters
+    ----------
+    p1 : list
+        paragraph as a list of line strings
+    p2 : list
+        comparison paragraph as a list of line strings
+
+    Returns
+    -------
+    float
+        phonetic edit distance
+    """
+
+    # encode into IPA representations aka pronunciations
+    p1 = [encode.encode_line_pronunciation(line) for line in p1]
+    p2 = [encode.encode_line_pronunciation(line) for line in p2]
+
+    p1_string = "".join(line_pronunciation for line_pronunciation in p1).replace(" ", "").strip()
+    p2_string = "".join(line_pronunciation for line_pronunciation in p2).replace(" ", "").strip()
+
+    p1_string = re.sub(r"\s+", "", p1_string, flags=re.UNICODE)
+    p2_string = re.sub(r"\s+", "", p2_string, flags=re.UNICODE)
+
+    p1_string = re.sub(r'[^\w]', "", p1_string, flags=re.UNICODE)
+    p2_string = re.sub(r'[^\w]', "", p2_string, flags=re.UNICODE)
+
+    edit_dist = levenshteinDistance(p1_string, p2_string)
+    return edit_dist
+
 
 def min_dtw_offset(p1, p2, return_cropped=True, use_short_window=True):
     """

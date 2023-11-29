@@ -85,9 +85,9 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "--measures",
-        default=["diversity", "meter", "syllable"],
+        default=["diversity", "meter", "syllable", "phonetic"],
         nargs="+",
-        help="List of measures to evaluate. From {'diversity','meter','syllable'}",
+        help="List of measures to evaluate. From {'diversity','meter','syllable','phonetic'}",
     )
     parser.add_argument(
         "--writeback",
