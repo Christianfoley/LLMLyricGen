@@ -9,6 +9,10 @@ import numpy as np
 
 import evaluation.encode_lines as encode
 
+# scaling values to normalize around theoretical center
+LEX_DIV_SCALE = 1 / 65
+SYLL_SCALE = 1 / 8
+
 
 def measure_lex_div(p1, mode="mtld"):
     """
@@ -34,7 +38,7 @@ def measure_lex_div(p1, mode="mtld"):
         lex_div = ld.mtld(flem_tokens)
     elif mode == "avg_mtld":
         lex_div = ld.mtld_ma_wrap(flem_tokens)
-    return lex_div
+    return (lex_div * LEX_DIV_SCALE) * -1  # negate since map is lower is better
 
 
 def measure_similarity(p1, p2, context_range=0):
@@ -65,7 +69,7 @@ def measure_similarity(p1, p2, context_range=0):
         if context_range > 0:
             line = line[:context_range]
         elif context_range < 0:
-            line[context_range:]
+            line = line[context_range:]
         return " ".join(line)
 
     p1 = [prep_line(l) for l in p1]
@@ -114,7 +118,7 @@ def measure_meter(p1, p2):
     p2_string = re.sub(r"\s+", "", p2_string, flags=re.UNICODE)
 
     edit_dist = levenshteinDistance(p1_string, p2_string)
-    return edit_dist  # min(100, 100 / (edit_dist + 2e-7))  # math.exp(-0.1 * avg_edit_distance)
+    return edit_dist
 
 
 def measure_syllable(p1: list, p2: list):
@@ -169,7 +173,7 @@ def measure_syllable(p1: list, p2: list):
     for i in range(len(p1_c)):
         score += abs(sum(p1_c[i]) - sum(p2_c[i]))
 
-    return score / len(p1_c)  # min(100, 100 / (score + 2e-7))  # math.exp(-0.1 * score)
+    return score * SYLL_SCALE / len(p1_c)
 
 
 def measure_internal_semantics(model, p1):

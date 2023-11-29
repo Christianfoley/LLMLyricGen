@@ -58,7 +58,7 @@ class ScoreAccumulator(object):
             "string_similarity",
             "head_similarity",
             "tail_similarity",
-            "phonetic",
+            "phonetics",
         }
         self.internal_measures = {"diversity", "semantics_internal"}
         for measure in self.measures:
@@ -85,7 +85,7 @@ class ScoreAccumulator(object):
             "string_similarity": metrics.measure_similarity,
             "head_similarity": lambda p1, p2: metrics.measure_similarity(p1, p2, 2),
             "tail_similarity": lambda p1, p2: metrics.measure_similarity(p1, p2, -2),
-            "phonetic": metrics.measure_phonetic_similarity,
+            "phonetics": metrics.measure_phonetic_similarity,
         }
 
     def get_total_pred_score(self, measure):
@@ -155,10 +155,10 @@ class ScoreAccumulator(object):
             return [self.__database[id]["target_scores"] for id in ids]
         return [self.__database[songid]["target_scores"] for songid in self.get_ids()]
 
-    def score_all_songs(self, song_database):
+    def score_all_songs(self, song_database, num_workers=6):
         """
         Scores all songs in a song database (a list of song dictionaries) and adds
-        them to accumulators database.
+        them to accumulators database.S
 
         Parameters
         ----------
