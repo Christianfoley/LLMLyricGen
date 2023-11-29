@@ -4,6 +4,7 @@ import numpy as np
 
 import evaluation.syllable_analysis as sylco
 import evaluation.meter_analysis as metco
+import eng_to_ipa as ipa
 
 
 def prep_encoding(text):
@@ -146,3 +147,32 @@ def embed_ada(text, keyfile="api_key.txt"):
         openai.Embedding.create(model="text-embedding-ada-002", input=text)
     )
     return embedding.data[0].embedding
+
+
+def encode_line_pronunciation(line, to_stdout=False):
+    """
+    Encodes a song line (line of text) into a line of phonemes.
+    Ex:
+        the quick brown fox jumps over the lazy dog
+            -> ðə kwɪk braʊn fɑks ʤəmpt ˈoʊvər ðə ˈleɪzi dɔg
+
+    Parameters
+    ----------
+    line : str
+        string of words (line)
+    to_stdout : bool, optional
+        whether to print to stdout, by default False
+
+    Returns
+    -------
+    string
+        string of words in IPA representation
+    """
+    line = prep_encoding(line)
+
+    if line == "":
+        if to_stdout:
+            print(line)
+        return ""
+
+    return ipa.convert(line)

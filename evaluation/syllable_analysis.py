@@ -1,7 +1,7 @@
 import re
 from num2words import num2words
 
-SYL_DICT_PATH = "Syllables.txt"
+SYL_DICT_PATH = "evaluation/Syllables.txt"
 SYL_DICT = None
 
 
