@@ -91,7 +91,7 @@ Instructions are as follows:
 
 To generate the radar plots, we copy code from [this colab notebook by Lmsys](https://colab.research.google.com/drive/15O3Y8Rxq37PuMlArE291P4OC6ia37PQK#scrollTo=5i8R0l-XqkgO).
 
-We provide a customized copy in this repo, run ```generate_mt_bench_plots.ipynb``` to replicate the plots.
+We provide a customized copy in this repo, run ```mt_bench/generate_mt_bench_plots.ipynb``` to replicate the plots.
 
 ## MT-Bench Results
 
@@ -110,7 +110,7 @@ To evaluate our model on MT-Bench do the following setup in you favorite python 
     python gen_model_answer.py --model-path cs182project/llama-2-7b-chat-lyre-lm --model-id lyre-lm
     ```
 
-    Alternatively, you may copy our provided MT-Bench outputs found at ```mt_bench/lyre-lm.jsonl``` into ```FastChat/fastchat/llm_judge/data/mt_bench/model_answers/```
+    Alternatively, you may copy our provided MT-Bench outputs found at ```mt_bench/lyre-lm.jsonl``` into ```FastChat/fastchat/llm_judge/data/mt_bench/model_answers/``` or wherever you clone FastChat.  You may need to make the model_answer directory.
 
 
 3. Once inference is complete run this to generate judgements, you need an OpenAI API Key:
