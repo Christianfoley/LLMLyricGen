@@ -177,12 +177,10 @@ def encode_line_pronunciation(line, to_stdout=False):
         syllables = []
         for i in range(len(word)):
             phoneme = word[i]
-            print(phoneme)
             if i == 0 and phoneme[-1].isdigit():
                 syllables.append(phoneme)
             elif phoneme[-1].isdigit():  # vowel = end of syllable
                 syllable += phoneme
-                print(syllable)
                 syllables.append(syllable)
                 syllable = ""
             else:

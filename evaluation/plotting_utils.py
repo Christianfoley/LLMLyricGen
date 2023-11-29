@@ -34,8 +34,13 @@ def measures_boxplot(
     """
     sns.set_style("whitegrid")
     num_models = len(scores_db[measures[0]])
-    positions = [np.arange(len(measures)) * num_models + i for i in range(num_models)]
-    fig, ax = plt.subplots(figsize=(max(12, 2 * len(models) * len(measures)), 6))
+    positions = [
+        (np.arange(len(measures)) * num_models)
+        + np.linspace(0, (len(measures) * 0.5), len(measures), endpoint=False)
+        + i
+        for i in range(num_models)
+    ]
+    fig, ax = plt.subplots(figsize=(max(12, 2 * len(models) * len(measures)), 7))
 
     for i, model in enumerate(models):
         # Plotting boxplots
@@ -65,14 +70,14 @@ def measures_boxplot(
                 rotation=90,
             )
 
-    ax.set_xticks(np.arange(len(measures)) * num_models + num_models / 2 - 0.5)
+    ax.set_xticks((positions[-1] + positions[0]) / 2)  # tick in the middle plot
     ax.set_xticklabels(measures)
     legend_patches = [
         Patch(facecolor=color, label=label) for color, label in zip(colors, labels)
     ]
     ax.legend(handles=legend_patches, loc=legend_pos)
     ax.set_ylabel("Scores")
-    ax.set_title("Model Performance Comparison")
+    ax.set_title("Model Performance Comparison", fontsize=16)
 
     if ylim is not None:
         ax.set_ylim(*ylim)
