@@ -5,17 +5,17 @@ This module contains utilities and scripts for empirical, numerical evaluation o
 Using the [evaluate_model.py](evaluate_model.py) script, evaluation can be run on an existing `json` database of outputs. Database must contain a list of song containers in the following format:
 ```json
 [
-    { // container for song 1
-        "id": (int) ...,
-        "prompt": (str) ...,                  //optional
-        "model_response": (str) ...,
-        "target_response": (str) ...          //optional
+    {
+        "id": 0,
+        "prompt": "some prompt here",
+        "model_response": "some response here",
+        "target_response": "some ground truth here"
     },
-    { // container for song 2
-        "id": (int) ..., // unique from song 1
-        "prompt": (str) ...,                  //optional
-        "model_response": (str) ...,
-        "target_response": (str) ...          //optional
+    {
+        "id": 1,
+        "prompt": "some prompt here",
+        "model_response": "some response here",
+        "target_response": "some ground truth here"
     },
     .
     .

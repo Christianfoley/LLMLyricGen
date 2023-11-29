@@ -15,15 +15,30 @@ pip install -r requirements.txt
 
 We provided a jupyter notebook that lets to expore some of the model outputs.  It is important to note that the songs in the dataset as well as the model outputs can contain mature or offensive content.  View discretion is advised.
 
-Check run the files in ```explore_generations.ipynb``` to see what out model outputted on the test set.  You can also compare to what llama outputs without finetuning.
+Check run the files in [explore_generations.ipynb](explore_generations.ipynb) to see what out model outputted on the test set.  You can also compare to what llama outputs without finetuning.
 
 ## Embedding Instructions
 
-Embeddings were generated through embedding_generation/embed_model_response.py
+Embeddings were generated through [embed_model_response.py](embedding_generation/embed_model_response.py)
 
-To view the embedding graphical results, run through the jupyter notebook ```embedding_generation/evaluate_embedding_accuracy.ipynb```
+To view the embedding graphical results, run through the jupyter notebook [evaluate_embedding_accuracy.ipynb](embedding_generation/evaluate_embedding_accuracy.ipynb)
 
-## Musical Metrics Instructions
+## Musicality Evaluation Instructions
+
+We provided a jupyter notebook to explore evaluation metrics (as well as view alternative embeddings!).
+
+To explore the evaluation metrics, take a look at [run_evaluation_metrics.py](run_evaluation_metrics.py)
+
+
+Alternatively, to quick start an evaluation, run the following script from your terminal in the root project directory:
+```bash
+py evaluation/evaluate_model.py <path_to_your_database> 
+```
+
+To run different measures, consider passing in a list of measures into the `--measures` argument. You can see the supported options in [score_accumulator.py](evaluation/score_acculumator.py):
+```bash
+py evaluation/evaluate_model.py <path_to_your_database> --measures diversity meter syllable
+```
 
 ## Interactive Demo
 (Large file warning, this will download the model ~25 GB)
@@ -100,7 +115,7 @@ Instructions are as follows:
 
 To generate the radar plots, we copy code from [this colab notebook by Lmsys](https://colab.research.google.com/drive/15O3Y8Rxq37PuMlArE291P4OC6ia37PQK#scrollTo=5i8R0l-XqkgO).
 
-We provide a customized copy in this repo, run ```mt_bench/generate_mt_bench_plots.ipynb``` to replicate the plots.
+We provide a customized copy in this repo, run [generate_mt_bench_plots.ipynb](mt_bench/generate_mt_bench_plots.ipynb) to replicate the plots.
 
 ## MT-Bench Results
 
