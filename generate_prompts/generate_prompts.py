@@ -9,7 +9,7 @@ import time
 import os
 
 SYSTEM_PROMPT = "You are a helpful assistant that creates prompts for Large Language Model fine-tuning."
-USER_PROMPT = """Below will the lyrics of a song.  Consider the lyrics, themes, musical styles, and cultural aspects. Generate a one paragraph condensed prompt that requests that song in an active voice, specifying the artist style to mimic. For example: "Write me as song in the style of [ARTIST] that [insert song characteristics]..." """
+USER_PROMPT = """Below will be the lyrics of a song.  Consider the lyrics, themes, musical styles, and cultural aspects. Generate a one paragraph condensed prompt that requests that song in an active voice, specifying the artist style to mimic. For example: "Write me a song in the style of [ARTIST] that [insert song characteristics]..." """
 
 
 def get_user_prompt(lyrics, artist):
