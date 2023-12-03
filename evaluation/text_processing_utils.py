@@ -38,6 +38,7 @@ def get_kword(delin):
     """Gets kword readable string from matched delineator"""
     delin = delin.split(":")[0]
     delin = re.sub(r"\d+", "", delin)
+    delin = re.sub(r"[\[\]\(\)]", "", delin)
     return delin.strip()
 
 
@@ -58,6 +59,9 @@ def clean_song(text):
     """
     text = unidecode(text).lower()
 
+    # add a newline padd
+    text = "\n" + text
+
     # Replace all "[?]", "[chuckles]", "[laughs]", "[Mumbling]" with "nan"
     text = re.sub(r"\[\?\]|\[chuckles\]|\[laughs\]|\[Mumbling\]", "nan", text)
     text = re.sub(r"\(\?\)|\(chuckles\)|\(laughs\)|\(Mumbling\)", "nan", text)
@@ -71,9 +75,8 @@ def clean_song(text):
     text = re.sub(r"\(\.*?\)", "nan", text)
 
     # For any remaining bracketed texts replace with kword readable string and add a newline
-
     def match_to_kword_group(match):
-        kword = get_kword(match.group(2))
+        kword = get_kword(match.group())
 
         for keyword in STANZA_KEYWORDS:
             if kword.startswith(keyword):
@@ -87,7 +90,9 @@ def clean_song(text):
         else:
             return match.group()
 
-    text = re.sub(r"(\[|\()([\s\S]*?)(\]|\))", replace_bracketed_if_match, text)
+    text = re.sub(
+        r"((\[|\()([\s\S]*?)(\]|\)))|(?<=\n)[^:\n]*:", replace_bracketed_if_match, text
+    )
 
     # Finally remove any pre/post-ambles:
     # 1.) the songtext should begin with a successful match (matches to a keyword)

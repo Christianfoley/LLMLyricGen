@@ -14,6 +14,7 @@ class ScoreAccumulator(object):
         self,
         measures=["diversity"],
         default_matching="",
+        special_delin=None,
         require_prompt=False,
         require_target=True,
         verbose=True,
@@ -33,6 +34,8 @@ class ScoreAccumulator(object):
             list of measures to calculate for each song, by default ["diversity"]
         default_matching : str
             string defining the default stanza or line matching for comparison
+        special_delin : regular expression
+            special delineator for separating stanzas
         require_prompt : bool, optional
             whether to require the model prompt for each song, by default False
         require_target : bool, optional
