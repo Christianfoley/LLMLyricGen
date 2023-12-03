@@ -60,6 +60,8 @@ class ScoreAccumulator(object):
             "tail_similarity",
             "phonetics",
         }
+        if "all" in self.measures:
+            self.measures = list(supported_meas)
         self.internal_measures = {"diversity", "semantics_internal"}
         for measure in self.measures:
             if measure not in supported_meas:

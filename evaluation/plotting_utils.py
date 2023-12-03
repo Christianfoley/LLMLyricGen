@@ -85,7 +85,7 @@ def measures_boxplot(
     plt.show()
 
 
-def plot_3d_pca(
+def plot_3d_centroids(
     data,
     labels,
     colors,

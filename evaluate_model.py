@@ -1,4 +1,4 @@
-from score_acculumator import ScoreAccumulator
+from evaluation.score_acculumator import ScoreAccumulator
 import argparse, json, os
 
 
@@ -85,9 +85,9 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "--measures",
-        default=["diversity", "meter", "syllable", "phonetic"],
+        default=["all"],
         nargs="+",
-        help="List of measures to evaluate. From {'diversity','meter','syllable','phonetic'}",
+        help="List of measures to evaluate. If all supported use 'all' ",
     )
     parser.add_argument(
         "--writeback",
