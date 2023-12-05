@@ -13,7 +13,7 @@ def measures_boxplot(
     labels,
     ylim=None,
     show_outliers=False,
-    legend_pos="upper right",
+    savef="",
 ):
     """
     Generates a box plot comparing different models across various measures.
@@ -75,13 +75,16 @@ def measures_boxplot(
     legend_patches = [
         Patch(facecolor=color, label=label) for color, label in zip(colors, labels)
     ]
-    ax.legend(handles=legend_patches, loc=legend_pos)
+    ax.legend(handles=legend_patches, loc="upper left", bbox_to_anchor=(1, 1))
+    plt.subplots_adjust(right=0.75)
     ax.set_ylabel("Scores")
     ax.set_title("Model Performance Comparison", fontsize=16)
 
     if ylim is not None:
         ax.set_ylim(*ylim)
 
+    if savef:
+        plt.savefig(savef, facecolor=(1, 1, 1), dpi=100)
     plt.show()
 
 
