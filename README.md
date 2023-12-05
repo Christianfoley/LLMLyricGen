@@ -19,7 +19,7 @@ Check run the files in [explore_generations.ipynb](explore_generations.ipynb) to
 
 ## Embedding Instructions
 
-Embeddings were generated through [embed_model_response.py](embedding_generation/embed_model_response.py)
+Embeddings were generated through [embed_model_responses.py](embedding_generation/embed_model_responses.py)
 
 To view the embedding graphical results, run through the jupyter notebook [evaluate_embedding_accuracy.ipynb](embedding_generation/evaluate_embedding_accuracy.ipynb)
 
