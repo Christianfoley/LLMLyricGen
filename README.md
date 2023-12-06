@@ -27,7 +27,7 @@ To view the embedding graphical results, run through the jupyter notebook [evalu
 
 We provided a jupyter notebook to explore evaluation metrics (as well as view alternative embeddings!).
 
-To explore the evaluation metrics, take a look at [run_evaluation_metrics.py](run_evaluation_metrics.py)
+To explore the evaluation metrics, take a look at [run_evaluation_metrics.ipynb](run_evaluation_metrics.ipynb)
 
 
 Alternatively, to quick start an evaluation, run the following script from your terminal in the root project directory:
