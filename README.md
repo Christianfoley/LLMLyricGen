@@ -76,23 +76,23 @@ Instructions are as follows:
     cd FastChat
     pip3 install --upgrade pip  # enable PEP 660 support
     pip3 install -e ".[model_worker,webui]"
-    pip3 install -e ".[train]"
+    pip3 install -e ".[train]
     ```
 
-3. Run the training command:
+3. Run the training command (make sure to update the ```--data_path``` to the actual path to the datafile found at LLMLyricGen/data/prompts/conversation_style_new_prompts.json found [here](data/prompts/conversation_style_new_prompts.json) with respect to your FastChat download location):
     ```
     torchrun --nproc_per_node=4 --master_port=20001 fastchat/train/train_mem.py \
-        --model_name_or_path meta-llama/Llama-2-7b-chat-hf \
-        --data_path cs182project/182-final-project \
+        --model_name_or_path  meta-llama/Llama-2-7b-chat-hf\
+        --data_path ~/LLMLyricGen/data/prompts/conversation_style_new_prompts.json \
         --bf16 True \
         --output_dir output_llama-2-7b-chat-hf-lyre \
         --num_train_epochs 5 \
-        --per_device_train_batch_size 2 \
-        --per_device_eval_batch_size 2 \
-        --gradient_accumulation_steps 16 \
+        --per_device_train_batch_size 4 \
+        --per_device_eval_batch_size 4 \
+        --gradient_accumulation_steps 8 \
         --evaluation_strategy "no" \
         --save_strategy "steps" \
-        --save_steps 101 \
+        --save_steps 50 \
         --save_total_limit 10 \
         --learning_rate 2e-5 \
         --weight_decay 0. \
@@ -110,6 +110,41 @@ Instructions are as follows:
     Pick a batch size and nproc_per_node that is compatible with your setup.
 
 4. Watch the loss go down! Fun!
+
+5. If you want to try LoRA fine-tuning, tru this command:
+    Use the ```--include localhost:0``` tag to pick the GPUs you want to run on.  Note that LoRA still takes around 40-80GB to run.  You can change the rank by changing ```--lora_r 256```.
+
+    Note that to get this working, you might need to install some extra Python packages that FastChat does not naturally come with. As such, ensure that you have PEFT installed.  You can install it with ```pip install peft```.  You may also need to run ```pip install deepspeed```.
+
+    Again, make sure the file path for the data is properly referencing [this file](data/prompts/conversation_style_new_prompts.json).
+
+    ```
+    deepspeed --include localhost:0 fastchat/train/train_lora.py \
+        --model_name_or_path meta-llama/Llama-2-7b-chat-hf \
+        --lora_r 256 \
+        --lora_alpha 16 \
+        --lora_dropout 0.05 \
+        --data_path ~/LLMLyricGen/data/prompts/conversation_style_new_prompts.json \
+        --bf16 True \
+        --output_dir output_llama-2-7b-chat-lyre-chat_lora_rank256 \
+        --num_train_epochs 6 \
+        --per_device_train_batch_size 1 \
+        --per_device_eval_batch_size 1 \
+        --gradient_accumulation_steps 64 \
+        --evaluation_strategy "no" \
+        --save_strategy "steps" \
+        --save_steps 12 \
+        --save_total_limit 10 \
+        --learning_rate 2e-5 \
+        --weight_decay 0. \
+        --warmup_ratio 0.03 \
+        --lr_scheduler_type "cosine" \
+        --logging_steps 1 \
+        --tf32 True \
+        --model_max_length 2048 \
+        --q_lora True \
+        --deepspeed playground/deepspeed_config_s2.json
+    ```
 
 ## MT-Bench Radar Plots
 
@@ -143,3 +178,7 @@ To evaluate our model on MT-Bench do the following setup in you favorite python 
     python gen_judgment.py --model-list lyre-lm
     ```
 4. Once judgement is done, run ```python show_result.py --model-list lyre-lm```
+
+## Training Curves, Hyper-Parameters, and Ablations
+
+To replicate the training curves in the paper, run through [this ipynb](training_curves/create_training_visualizations.ipynb).  The batching graphs were pulled from WandB, so the files are directly included in the same directory as the notebook.
