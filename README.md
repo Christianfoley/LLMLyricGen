@@ -62,7 +62,7 @@ To finetune use [FastChat](https://github.com/lm-sys/FastChat/tree/main)
 Instructions are as follows:
 
 0. Request llama access via https://ai.meta.com/resources/models-and-libraries/llama-downloads/
-    Approval is usually very fast if you use you berkeley.edu email.
+    Approval is usually very fast if you use your berkeley.edu email.
 
     Make sure you have a Huggingface account, you need to prove to them you have llama access
 
@@ -86,7 +86,7 @@ Instructions are as follows:
         --data_path ~/LLMLyricGen/data/prompts/conversation_style_new_prompts.json \
         --bf16 True \
         --output_dir output_llama-2-7b-chat-hf-lyre \
-        --num_train_epochs 5 \
+        --num_train_epochs 10 \
         --per_device_train_batch_size 4 \
         --per_device_eval_batch_size 4 \
         --gradient_accumulation_steps 8 \
@@ -165,6 +165,8 @@ To evaluate our model on MT-Bench do the following setup in you favorite python 
     pip install -e ".[model_worker,llm_judge]"
     ```
 2. Run this to generate the outputs (to make this run in a reasonable time window, use a GPU)
+
+    Pick a model to evaluate: [```cs182project/Llama-2-7b-chat-Lyre-LM-chat```, ```cs182project/Llama-2-7b-chat-Lyre-LM-chat-checkpoint-50```]
     ```
     python gen_model_answer.py --model-path cs182project/llama-2-7b-chat-lyre-lm --model-id lyre-lm
     ```
