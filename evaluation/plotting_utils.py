@@ -207,7 +207,7 @@ def plot_3d_centroids(
     - title: Title of the plot.
     """
     fig = go.Figure(layout=dict(width=plot_size[0], height=plot_size[1]))
-
+    centroid_list = []
     for dataset, label, color in zip(data, labels, colors):
         fig.add_trace(
             go.Scatter3d(
@@ -219,10 +219,10 @@ def plot_3d_centroids(
                 name=label,
             )
         )
-
         # Plot centroids if enabled
         if centroids:
             centroid = np.mean(dataset, axis=0)
+            centroid_list.append(centroid)
             fig.add_trace(
                 go.Scatter3d(
                     x=[centroid[0]],
@@ -242,6 +242,8 @@ def plot_3d_centroids(
             zaxis=dict(title="3rd PC", range=[-range_limit, range_limit]),
         ),
         legend_title="Legend",
+        legend=dict(title="Legend", font=dict(size=20)),
     )
 
     fig.show()
+    return centroid_list
