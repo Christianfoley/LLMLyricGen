@@ -1,5 +1,5 @@
 # Lyre-LM: An Exploration of Fine-tuning Large Language Models for Lyric Generation
-### Official implementation opf Lyre-LM. To view the full exploration report please see [LyreReport.pdf](LyreReport.pdf).
+### Official implementation of Lyre-LM. To view the full exploration report please see [LyreReport.pdf](LyreReport.pdf).
 
 ## Overall Environment
 **Make sure to have git lfs installed: instructions found here: https://git-lfs.com/**
@@ -145,6 +145,11 @@ Instructions are as follows:
         --q_lora True \
         --deepspeed playground/deepspeed_config_s2.json
     ```
+## Prompt Generation
+
+We used GPT-4-Turbo to generate prompts, but you can use any of OpenAI's models that are compatible with the chat completion API to run it. [Here is the file](generate_prompts/generate_prompts.py) for generating prompts.  You can see the prompts we used on line 11 and 12.
+
+The arguments the run this are in the bottom of the script where the argparse arguments are defined.  This script is only compatible with [a csv schema like this file](SongLyricsScraper/1000_songs_no_annotation.csv).
 
 ## MT-Bench Radar Plots
 
@@ -184,9 +189,3 @@ To evaluate our model on MT-Bench do the following setup in you favorite python 
 ## Training Curves, Hyper-Parameters, and Ablations
 
 To replicate the training curves in the paper, run through [this ipynb](training_curves/create_training_visualizations.ipynb).  The batching graphs were pulled from WandB, so the files are directly included in the same directory as the notebook.
-
-## Prompt Generation
-
-We used GPT-4-Turbo to generate prompts, but you can use any of OpenAI's models that are compatible with the chat completion API to run it. [Here is the file](generate_prompts/generate_prompts.py) for generating prompts.  You can see the prompts we used on line 11 and 12.
-
-The arguments the run this are in the bottom of the script where the argparse arguments are defined.  This script is only compatible with [a csv schema like this file](SongLyricsScraper/1000_songs_no_annotation.csv).
