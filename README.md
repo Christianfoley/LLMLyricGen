@@ -1,8 +1,8 @@
 # Lyre-LM: An Exploration of Fine-tuning Large Language Models for Lyric Generation
-
-### Makes sure to have git lfs installed: instructions found here: https://git-lfs.com/
+### Official implementation opf Lyre-LM. To view the full exploration report please see [LyreReport.pdf](LyreReport.pdf).
 
 ## Overall Environment
+**Make sure to have git lfs installed: instructions found here: https://git-lfs.com/**
 
 Most python packages needed are in the ```requirements.txt``` file.
 
@@ -19,9 +19,9 @@ Check run the files in [explore_generations.ipynb](explore_generations.ipynb) to
 
 ## Embedding Instructions
 
-Embeddings were generated through [embed_model_responses.py](embedding_generation/embed_model_responses.py)
+Embeddings were generated using the Sentence Bert `all-mpnet-base-v2` model.
 
-To view the embedding graphical results, run through the jupyter notebook [evaluate_embedding_accuracy.ipynb](embedding_generation/evaluate_embedding_accuracy.ipynb)
+To view the embedding graphical results, run through the jupyter notebook [run_evaluation_metrics.ipynb](run_evaluation_metrics.ipynb)
 
 ## Musicality Evaluation Instructions
 
@@ -29,16 +29,9 @@ We provided a jupyter notebook to explore evaluation metrics (as well as view al
 
 To explore the evaluation metrics, take a look at [run_evaluation_metrics.ipynb](run_evaluation_metrics.ipynb)
 
+## Data visualization
 
-Alternatively, to quick start an evaluation, run the following script from your terminal in the root project directory:
-```bash
-py evaluation/evaluate_model.py <path_to_your_database> 
-```
-
-To run different measures, consider passing in a list of measures into the `--measures` argument. You can see the supported options in [score_accumulator.py](evaluation/score_acculumator.py):
-```bash
-py evaluation/evaluate_model.py <path_to_your_database> --measures diversity meter syllable
-```
+To generate the rest of the figures from our report, as well as some additional visualizations of our data, please see [visualization_notebooks](visualization_notebooks).
 
 ## Interactive Demo
 (Large file warning, this will download the model ~25 GB)
