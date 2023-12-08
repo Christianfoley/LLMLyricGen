@@ -43,13 +43,19 @@ py evaluation/evaluate_model.py <path_to_your_database> --measures diversity met
 ## Interactive Demo
 (Large file warning, this will download the model ~25 GB)
 
+7 models are uploaded on to our Huggingface space: https://huggingface.co/cs182project
+
+Inference should work on all of them.
+
 To play with out model, follows these steps:
 
 1. Make a new conda environment.
 
 2. run ```pip3 install "fschat[model_worker,webui]```
 
-3. run ```python3 -m fastchat.serve.cli --model-path cs182project/llama-2-7b-chat-lyre-lm```
+3. run ```python3 -m fastchat.serve.cli --model-path cs182project/Llama-2-7b-chat-Lyre-LM-chat-checkpoint-100```
+
+    You can pick any model from the Huggingface space, just change out the ```--model-path``` argument.
 
 4. Have fun!
 
@@ -79,7 +85,8 @@ Instructions are as follows:
     pip3 install -e ".[train]
     ```
 
-3. Run the training command (make sure to update the ```--data_path``` to the actual path to the datafile found at LLMLyricGen/data/prompts/conversation_style_new_prompts.json found [here](data/prompts/conversation_style_new_prompts.json) with respect to your FastChat download location):
+3. Run the training command (make sure to update the ```--data_path``` to the actual path to the datafile found at LLMLyricGen/data/prompts/conversation_style_new_prompts.json found [here](data/prompts/conversation_style_new_prompts.json) with respect to your FastChat download location).  If you want to train from Llama-2-7B instead of the chat version, use ```--model_name_or_path meta-llama/Llama-2-7b-hf``` .
+
     ```
     torchrun --nproc_per_node=4 --master_port=20001 fastchat/train/train_mem.py \
         --model_name_or_path  meta-llama/Llama-2-7b-chat-hf\
@@ -184,3 +191,9 @@ To evaluate our model on MT-Bench do the following setup in you favorite python 
 ## Training Curves, Hyper-Parameters, and Ablations
 
 To replicate the training curves in the paper, run through [this ipynb](training_curves/create_training_visualizations.ipynb).  The batching graphs were pulled from WandB, so the files are directly included in the same directory as the notebook.
+
+## Prompt Generation
+
+We used GPT-4-Turbo to generate prompts, but you can use any of OpenAI's models that are compatible with the chat completion API to run it. [Here is the file](generate_prompts/generate_prompts.py) for generating prompts.  You can see the prompts we used on line 11 and 12.
+
+The arguments the run this are in the bottom of the script where the argparse arguments are defined.  This script is only compatible with [a csv schema like this file](SongLyricsScraper/1000_songs_no_annotation.csv).
