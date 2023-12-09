@@ -189,7 +189,7 @@ To evaluate our model on MT-Bench do the following setup in you favorite python 
     ```
     python gen_judgment.py --model-list lyre-chat-small-batch-checkpoint-50
     ```
-5. Once judgement is done, run ```python show_result.py --model-list lyre-lm```
+5. Once judgement is done, run ```python show_result.py --model-list lyre-chat-small-batch-checkpoint-50 lyre-chat-small-batch-checkpoint-150```
 
 ## Training Curves, Hyper-Parameters, and Ablations
 
