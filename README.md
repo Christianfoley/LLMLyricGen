@@ -173,18 +173,22 @@ To evaluate our model on MT-Bench do the following setup in you favorite python 
 
     Pick a model to evaluate: [```cs182project/Llama-2-7b-chat-Lyre-LM-chat```, ```cs182project/Llama-2-7b-chat-Lyre-LM-chat-checkpoint-50```]
     ```
-    python gen_model_answer.py --model-path cs182project/llama-2-7b-chat-lyre-lm --model-id lyre-lm
+    python gen_model_answer.py --model-path cs182project/Llama-2-7b-chat-Lyre-LM-chat --model-id lyre-lm
     ```
 
-    Alternatively, you may copy our provided MT-Bench outputs found at ```mt_bench/lyre-lm.jsonl``` into ```FastChat/fastchat/llm_judge/data/mt_bench/model_answers/``` or wherever you clone FastChat.  You may need to make the model_answer directory.
+    Alternatively, you may copy our provided MT-Bench outputs found at ```mt_bench/lyre-chat-small-batch-checkpoint-150.jsonl``` or  ```mt_bench/lyre-chat-small-batch-checkpoint-150.jsonl``` into ```FastChat/fastchat/llm_judge/data/mt_bench/model_answers/``` or wherever you cloned FastChat.  You may need to make the model_answer directory.
 
 
 3. Once inference is complete run this to generate judgements, you need an OpenAI API Key:
 
     ```
-    python gen_judgment.py --model-list lyre-lm
+    python gen_judgment.py --model-list lyre-chat-small-batch-checkpoint-150
     ```
-4. Once judgement is done, run ```python show_result.py --model-list lyre-lm```
+    and/or
+    ```
+    python gen_judgment.py --model-list lyre-chat-small-batch-checkpoint-50
+    ```
+5. Once judgement is done, run ```python show_result.py --model-list lyre-lm```
 
 ## Training Curves, Hyper-Parameters, and Ablations
 
