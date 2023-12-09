@@ -173,8 +173,9 @@ To evaluate our model on MT-Bench do the following setup in you favorite python 
 
     Pick a model to evaluate: [```cs182project/Llama-2-7b-chat-Lyre-LM-chat```, ```cs182project/Llama-2-7b-chat-Lyre-LM-chat-checkpoint-50```]
     ```
-    python gen_model_answer.py --model-path cs182project/Llama-2-7b-chat-Lyre-LM-chat --model-id lyre-lm
+    python gen_model_answer.py --model-path cs182project/Llama-2-7b-chat-Lyre-LM-chat --model-id lyre-chat-small-batch-checkpoint-150
     ```
+    if using  ```cs182project/Llama-2-7b-chat-Lyre-LM-chat-checkpoint-50``` change ```--model-id``` to ```lyre-chat-small-batch-checkpoint-50```
 
     Alternatively, you may copy our provided MT-Bench outputs found at ```mt_bench/lyre-chat-small-batch-checkpoint-150.jsonl``` or  ```mt_bench/lyre-chat-small-batch-checkpoint-150.jsonl``` into ```FastChat/fastchat/llm_judge/data/mt_bench/model_answers/``` or wherever you cloned FastChat.  You may need to make the model_answer directory.
 
