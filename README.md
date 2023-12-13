@@ -155,7 +155,7 @@ The arguments the run this are in the bottom of the script where the argparse ar
 
 To generate the radar plots, we copy code from [this colab notebook by Lmsys](https://colab.research.google.com/drive/15O3Y8Rxq37PuMlArE291P4OC6ia37PQK#scrollTo=5i8R0l-XqkgO).
 
-We provide a customized copy in this repo, run [generate_mt_bench_plots.ipynb](mt_bench/generate_mt_bench_plots.ipynb) to replicate the plots.
+We provide a customized copy in this repo, run [generate_mt_bench_plots.ipynb](visualization_notebooks/generate_mt_bench_plots.ipynb) to replicate the plots.
 
 ## MT-Bench Results
 
@@ -193,4 +193,4 @@ To evaluate our model on MT-Bench do the following setup in you favorite python 
 
 ## Training Curves, Hyper-Parameters, and Ablations
 
-To replicate the training curves in the paper, run through [this ipynb](training_curves/create_training_visualizations.ipynb).  The batching graphs were pulled from WandB, so the files are directly included in the same directory as the notebook.
+To replicate the training curves in the paper, run through [this ipynb](visualization_notebooks/create_training_visualizations.ipynb).  The batching graphs were pulled from WandB, so the files are directly included in the same directory as the notebook.
